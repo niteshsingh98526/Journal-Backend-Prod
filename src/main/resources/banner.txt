@@ -1,0 +1,7 @@
+--------------------------------------------------------------------------
+Application Name : ${spring.application.name}
+Application Context : ${server.servlet.context-path}
+Application Port : ${server.port}
+--------------------------------------------------------------------------
+${AnsiColor.BRIGHT_RED}     Spring boot banner customization example
+--------------------------------------------------------------------------

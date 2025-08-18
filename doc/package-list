@@ -1,0 +1,14 @@
+com.journal.journalApp
+com.journal.journalApp.api.response
+com.journal.journalApp.cache
+com.journal.journalApp.config
+com.journal.journalApp.constants
+com.journal.journalApp.controller
+com.journal.journalApp.entity
+com.journal.journalApp.enums
+com.journal.journalApp.filter
+com.journal.journalApp.model
+com.journal.journalApp.repository
+com.journal.journalApp.scheduler
+com.journal.journalApp.service
+com.journal.journalApp.utils
