@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -16,18 +18,54 @@ public class CorsConfig implements WebMvcConfigurer {
 
     private static final Logger logger = LoggerFactory.getLogger(CorsConfig.class);
 
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("http://localhost:4200", "https://journal-backend-prod-qbom.onrender.com") // Specific
+                                                                                                                  // origins
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .allowedHeaders("*")
+                .exposedHeaders("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin",
+                        "Access-Control-Request-Method", "Access-Control-Request-Headers")
+                .allowCredentials(true)
+                .maxAge(3600); // 1 hour
+    }
+
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:4200", "https://journal-backend-prod.onrender.com")); // Allow
-                                                                                                                 // frontend
-                                                                                                                 // origin
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true); // Allow cookies and credentials
+
+        // Allow specific origins for security
+        config.setAllowedOriginPatterns(
+                Arrays.asList("http://localhost:4200", "https://journal-backend-prod-qbom.onrender.com"));
+
+        // Allow all methods
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+        // Allow all headers
+        config.setAllowedHeaders(Arrays.asList("*"));
+
+        // Expose headers that the frontend might need
+        config.setExposedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"));
+
+        // Allow credentials (cookies, authorization headers)
+        config.setAllowCredentials(true);
+
+        // Cache preflight requests for 1 hour
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
+        logger.info("CORS configuration initialized with allowed origins: {}", config.getAllowedOriginPatterns());
+
         return new CorsFilter(source);
     }
 }

@@ -17,11 +17,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-public class SpringSecurity  {
+public class SpringSecurity {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -38,17 +41,38 @@ public class SpringSecurity  {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(withDefaults -> {}) // Enable CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS with custom config
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless (JWT)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/**").permitAll()       // ✅ Open to all
+                        .requestMatchers("/public/**", "/health", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // ✅
+                                                                                                                   // Open
+                                                                                                                   // to
+                                                                                                                   // all
                         .requestMatchers("/journal/**", "/users/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()) // everything else open
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    // ✅ CORS Configuration Source for Spring Security
+    @Bean
+    public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(
+                Arrays.asList("http://localhost:4200", "https://journal-backend-prod-qbom.onrender.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(
+                Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     // ✅ AuthenticationManager Bean

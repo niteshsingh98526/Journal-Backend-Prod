@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/public/password")
+@CrossOrigin(origins = { "http://localhost:4200", "https://journal-backend-prod-qbom.onrender.com" })
 @Tag(name = "Password Reset API's")
 public class PasswordResetController {
 
@@ -18,17 +19,16 @@ public class PasswordResetController {
     private PasswordResetService passwordResetService;
 
     @PostMapping("/forgot")
-    public ResponseEntity<?> forgot(@RequestBody ForgotPasswordRequest request, @RequestHeader(value = "Origin", required = false) String origin){
+    public ResponseEntity<?> forgot(@RequestBody ForgotPasswordRequest request,
+            @RequestHeader(value = "Origin", required = false) String origin) {
         String appBaseUrl = origin != null ? origin : "http://localhost:4200";
         passwordResetService.initiateReset(request.getEmailOrUsername(), appBaseUrl);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/reset")
-    public ResponseEntity<?> reset(@RequestBody ResetPasswordRequest request){
+    public ResponseEntity<?> reset(@RequestBody ResetPasswordRequest request) {
         passwordResetService.resetPassword(request.getToken(), request.getNewPassword());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-
-
