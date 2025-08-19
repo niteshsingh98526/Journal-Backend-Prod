@@ -15,10 +15,11 @@ import java.util.List;
 public class CorsConfig implements WebMvcConfigurer {
 
     private static final Logger logger = LoggerFactory.getLogger(CorsConfig.class);
+
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:4200")); // Allow frontend origin
+        config.setAllowedOrigins(List.of("http://localhost:4200", , "https://journal-backend-prod.onrender.com")); // Allow frontend origin
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // Allow cookies and credentials
