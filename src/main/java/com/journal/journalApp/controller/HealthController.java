@@ -32,6 +32,7 @@ public class HealthController {
                 redis.put("status", "UP");
                 redis.put("message", "Redis connection successful");
                 redis.put("test-result", result);
+                redis.put("provider", "Railway Redis");
             } else {
                 redis.put("status", "DOWN");
                 redis.put("message", "Redis template not available");
@@ -40,6 +41,7 @@ public class HealthController {
             redis.put("status", "DOWN");
             redis.put("message", "Redis connection failed: " + e.getMessage());
             redis.put("error", e.getClass().getSimpleName());
+            redis.put("provider", "Railway Redis");
         }
 
         health.put("redis", redis);

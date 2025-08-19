@@ -25,19 +25,40 @@ public class RedisConfig {
     @Value("${spring.data.redis.ssl.enabled:false}")
     private boolean sslEnabled;
 
+    @Value("${spring.data.redis.url:}")
+    private String redisUrl;
+
     @Bean
     @ConditionalOnProperty(name = "spring.data.redis.host")
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
-        config.setHostName(redisHost);
-        config.setPort(redisPort);
 
-        if (redisPassword != null && !redisPassword.isEmpty()) {
-            config.setPassword(redisPassword);
+        // If Redis URL is provided, parse it
+        if (redisUrl != null && !redisUrl.isEmpty()) {
+            // Parse redis://default:password@host:port
+            String url = redisUrl.replace("redis://", "");
+            String[] parts = url.split("@");
+            if (parts.length == 2) {
+                String[] auth = parts[0].split(":");
+                String[] hostPort = parts[1].split(":");
+
+                if (auth.length >= 2) {
+                    config.setPassword(auth[1]); // password
+                }
+                if (hostPort.length >= 2) {
+                    config.setHostName(hostPort[0]); // host
+                    config.setPort(Integer.parseInt(hostPort[1])); // port
+                }
+            }
+        } else {
+            // Fallback to individual properties
+            config.setHostName(redisHost);
+            config.setPort(redisPort);
+
+            if (redisPassword != null && !redisPassword.isEmpty()) {
+                config.setPassword(redisPassword);
+            }
         }
-
-        // SSL is configured via application.properties with
-        // spring.data.redis.ssl.enabled=true
 
         LettuceConnectionFactory factory = new LettuceConnectionFactory(config);
         factory.setTimeout(10000); // 10 seconds timeout for cloud connections
