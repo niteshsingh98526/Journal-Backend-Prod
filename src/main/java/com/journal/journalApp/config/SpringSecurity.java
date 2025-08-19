@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -46,10 +47,9 @@ public class SpringSecurity {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless (JWT)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/**", "/health", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // ✅
-                                                                                                                   // Open
-                                                                                                                   // to
-                                                                                                                   // all
+                        .requestMatchers("/public/**", "/health", "/swagger-ui/**", "/v3/api-docs/**", "/cors-test/**")
+                        .permitAll() // ✅ Open to all
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Allow all OPTIONS requests
                         .requestMatchers("/journal/**", "/users/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()) // everything else open
