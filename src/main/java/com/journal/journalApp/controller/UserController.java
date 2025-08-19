@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/users")
 @Tag(name = "User API's", description = "Read, Update, Delete")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     Logger logger = Logger.getLogger(UserController.class.getName());
