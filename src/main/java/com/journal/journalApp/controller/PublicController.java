@@ -25,7 +25,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/public")
-@CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
 @Tag(name = "Public API's")
 public class PublicController {

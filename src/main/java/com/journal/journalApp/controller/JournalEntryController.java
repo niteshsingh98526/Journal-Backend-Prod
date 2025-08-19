@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 @RequestMapping("/journal")
 @Tag(name = "Journal API's")
-@CrossOrigin(origins = "http://localhost:4200")
 public class JournalEntryController {
 
     @Autowired
