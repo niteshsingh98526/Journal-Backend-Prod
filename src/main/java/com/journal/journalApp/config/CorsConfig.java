@@ -21,8 +21,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://localhost:4200", "https://journal-backend-prod-qbom.onrender.com") // Specific
-                                                                                                                  // origins
+                .allowedOriginPatterns("*") // Allow all origins for development
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin",
@@ -35,9 +34,8 @@ public class CorsConfig implements WebMvcConfigurer {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Allow specific origins for security
-        config.setAllowedOriginPatterns(
-                Arrays.asList("http://localhost:4200", "https://journal-backend-prod-qbom.onrender.com"));
+        // Allow all origins for development (you can restrict this in production)
+        config.setAllowedOriginPatterns(Arrays.asList("*"));
 
         // Allow all methods
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));

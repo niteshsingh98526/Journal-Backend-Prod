@@ -8,8 +8,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/cors-test")
-@CrossOrigin(origins = { "http://localhost:4200",
-        "https://journal-backend-prod-qbom.onrender.com" }, allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CorsTestController {
 
     @GetMapping

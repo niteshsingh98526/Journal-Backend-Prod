@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/public/password")
-@CrossOrigin(origins = { "http://localhost:4200", "https://journal-backend-prod-qbom.onrender.com" })
 @Tag(name = "Password Reset API's")
 public class PasswordResetController {
 
