@@ -4,6 +4,13 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Environment / config
+*.env
+
+# Logs
+*.log
+/Logs/
+
 ### STS ###
 .apt_generated
 .classpath
@@ -13,7 +20,6 @@ target/
 .springBeans
 .sts4-cache
 *.properties
-*/Logs/.log
 ### IntelliJ IDEA ###
 .idea
 *.iws

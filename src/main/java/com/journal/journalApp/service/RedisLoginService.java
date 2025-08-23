@@ -46,8 +46,8 @@ public class RedisLoginService {
             log.info("Storing token in Redis for user: {}", userName);
 
             try {
-                //Save generated token in redis for 1 hr
-                redisTemplate.opsForValue().set(userName, jwtToken, 60 * 60, TimeUnit.SECONDS);
+                //Save generated token in redis for 1 day
+                redisTemplate.opsForValue().set(userName, jwtToken, 24 * 60 * 60, TimeUnit.SECONDS);
                 log.info("Token stored successfully in Redis for user: {}", userName);
             } catch (Exception e) {
                 log.error("Failed to store token in Redis for user: {}", userName, e);

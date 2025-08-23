@@ -52,7 +52,7 @@ public class JwtUtil {
                 .header().empty().add("typ","JWT")
                 .and()
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 1 hour expiration time
+                .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 1 day expiration time
                 .signWith(getSigningKey())
                 .compact();
     }
