@@ -21,8 +21,9 @@ public class SwaggerConfig {
                 new Info().title("Journal App API's")
                         .description("By Nitesh")
         )
-                .servers(Arrays.asList(new Server().url("http://localhost:8080").description("local"),
-                        new Server().url("https://journal-backend-prod-qbom.onrender.com").description("live")
+                .servers(Arrays.asList(new Server().url("https://journal-backend-prod-qbom.onrender.com").description("live"),
+                        new Server().url("http://localhost:8080").description("local")
+
                 ))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components().addSecuritySchemes("bearerAuth",new SecurityScheme()
