@@ -35,6 +35,7 @@ public class UserScheduler {
 
     //@Scheduled(cron = "0 9 * * SUN")  //for every sunday send mail
     //@Scheduled(cron = "0 * * ? * *")  //for every minute send mail
+    @Scheduled(cron = "0 0 12 * * ?")  //for every day at noon (12:00) send mail
     public void fetchUsersAndSendSaMail(){
         List<User> users = userRepository.getUserSorSA();
         for (User user : users){
