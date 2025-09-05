@@ -86,6 +86,12 @@ public class PublicController {
 //        }
 //    }
 
+    
+    @GetMapping("/health")
+    public String helthCheck(){
+        return "OK";
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody JwtResponse request) {
         try {
